@@ -38,14 +38,22 @@ WORKDIR /
 COPY --from=build /artifacts.tar.gz .
 
 RUN apk add --no-cache \
+      ca-certificates \
       iptables \
       readline \
       gnu-libiconv \
       zlib \
     && tar xfz artifacts.tar.gz \
-    && rm artifacts.tar.gz
+    && rm artifacts.tar.gz \
+    && mkdir /etc/vpnserver \
+    && touch /etc/vpnserver/vpn_server.config \
+    && ln -sf /etc/vpnserver/vpn_server.config /usr/local/libexec/softether/vpnserver/vpn_server.config \
+    && mkdir -p /var/log/vpnserver/packet_log /var/log/vpnserver/security_log /var/log/vpnserver/server_log \
+    && ln -sf /var/log/vpnserver/packet_log /usr/local/libexec/softether/vpnserver/packet_log \
+    && ln -sf /var/log/vpnserver/security_log /usr/local/libexec/softether/vpnserver/security_log \
+    && ln -sf /var/log/vpnserver/server_log /usr/local/libexec/softether/vpnserver/server_log
 
-VOLUME /usr/local/libexec/softether/vpnserver
+VOLUME /etc/vpnserver /var/log/vpnserver
 
 EXPOSE 500/udp 1194/tcp 1194/udp 1701/udp 4500/udp 5555/tcp
 

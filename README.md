@@ -22,18 +22,17 @@ Start the container:
       -p 5555:5555/tcp \
       softethervpn
 
-The configuration is stored in `/usr/local/libexec/softether/vpnserver/vpn_server.config`.
+The configuration is stored in `/etc/vpnserver/vpn_server.config`.
 
-If you wish to preserve the settings, you can use Docker volumes or map it to a local file
-when starting the container by adding something similar to the following argument:
+To preserve the settings locally, map the /etc/vpnserver like so:
 
-    -v $PWD/vpn_server.config:/usr/local/libexec/softether/vpnserver/vpn_server.config
+    -v $PWD/config:/etc/vpnserver
 
 ## Logging Output
 
-Logs are stored in `/usr/local/libexec/softether/vpnserver/`. To show the latest log output:
+Logs are stored in `/var/log/vpnserver/*`. To show the latest log output:
 
-    docker exec -it softethervpn sh -c "tail -f /usr/local/libexec/softether/vpnserver/*_log/*.log"
+    docker exec -it softethervpn sh -c "tail -f /var/log/vpnserver/*/*.log"
 
 ## Configuring
 
@@ -54,5 +53,4 @@ Enabling secure NAT and addng a user to the default hub:
     docker exec -it softethervpn vpncmd localhost /SERVER /HUB:DEFAULT /CMD UserCreate myusername
     docker exec -it softethervpn vpncmd localhost /SERVER /HUB:DEFAULT /CMD UserPasswordSet myusername
     docker exec -it softethervpn vpncmd localhost /SERVER /HUB:DEFAULT /CMD StatusGet
-
 
