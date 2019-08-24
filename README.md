@@ -6,6 +6,10 @@ with [SoftEther VPN](https://www.softether.org/) and [Alpine Linux](https://alpi
 SoftEtherVPN is a simple and performant alternative to OpenVPN or StrongSwan. It provides a
 handy CLI and supports multiple protocols including L2TP, IPsec, and OpenVPN.
 
+For the most part, I've switched to WireGuard for my VPN needs, however, Softether is my go
+to VPN for supporting OS-native VPN clients. It's feature-filled, supports many ways of
+getting through restrictive networks, and is relatively easy to configure.
+
 ## Running
 
 Start the container:
@@ -14,7 +18,9 @@ Start the container:
       --name=softethervpn \
       --cap-add NET_ADMIN \
       --cap-add SYSLOG \
+      -p 53:53/udp \
       -p 500:500/udp \
+      -p 992:992/tcp \
       -p 1194:1194/tcp \
       -p 1194:1194/udp \
       -p 1701:1701/udp \
@@ -43,6 +49,9 @@ Using the CLI to set administrator password, setup certificate, and enable VPN p
     docker exec -it softethervpn vpncmd localhost /SERVER /ADMINHUB /CMD ServerPasswordSet
     docker exec -it softethervpn vpncmd localhost /SERVER /ADMINHUB /CMD ServerCertRegenerate yourhostname.com
     docker exec -it softethervpn vpncmd localhost /SERVER /ADMINHUB /CMD IPsecEnable
+    docker exec -it softethervpn vpncmd localhost /SERVER /ADMINHUB /CMD DisableNatTraversal
+    docker exec -it softethervpn vpncmd localhost /SERVER /ADMINHUB /CMD EnableVpnOverDns
+    docker exec -it softethervpn vpncmd localhost /SERVER /ADMINHUB /CMD EnableVpnOverIcmp
     docker exec -it softethervpn vpncmd localhost /SERVER /ADMINHUB /CMD OpenVpnEnable yes /PORTS:1194
     docker exec -it softethervpn vpncmd localhost /SERVER /ADMINHUB /CMD OpenVpnMakeConfig
     docker cp softethervpn:/openvpn_config.zip .
