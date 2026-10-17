@@ -1,3 +1,11 @@
+> **Archived — October 16, 2026**
+>
+> This historical SoftEther VPN container build is no longer maintained or validated against current releases.
+>
+> Source and history remain available for reference; no further updates or support are planned.
+
+---
+
 # SoftEther VPN + Alpine Linux
 
 This repository contains a Dockerfile for generating an image
